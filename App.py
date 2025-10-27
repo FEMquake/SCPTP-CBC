@@ -19,8 +19,8 @@ def predict_backbone(inputs, config):
 
     # TODO: Replace this with the actual model.predict() call.
     data = {
-        'Drift': [0.00, 0.002, 0.005, 0.008, 0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04],
-        'BaseShear': [0, 200, 450, 520, 550, 580, 600, 650, 550, 580, 620]
+        'Drift': [0.00, 0.2, 0.5, 0.8, 1, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0],
+        'BaseShear': [0, 200, 450, 520, 550, 580, 600, 650, 640, 630, 620]
     }
     
     if config['ed_type'] == 'Internal' and inputs['rho_b'] == 0:
@@ -90,7 +90,6 @@ def plot_backbone_curve(df):
     fig, ax = plt.subplots(figsize=(8, 6))
     ax.plot(df['Drift'], df['BaseShear'], 'b-', marker='o', label='Predicted Backbone')
     
-    # Style to match paper (Fig 12)
     ax.set_title('Predicted Cyclic Backbone Curve', fontsize=16)
     ax.set_xlabel('Drift (%)', fontsize=12)
     ax.set_ylabel('Base Shear (kN)', fontsize=12)
@@ -153,8 +152,6 @@ def create_summary_html(inputs, config, df):
 
     return style, table_html
 
-# --- Main Streamlit App ---
-
 st.set_page_config(page_title="CBC Prediction Platform", layout="wide")
 
 st.title("Automated Platform for CBC Prediction of SCPT Piers")
@@ -168,7 +165,6 @@ with tab_tune:
     with col1:
         st.subheader("Key Design Parameters")
         
-        # Using labels from the paper (Table 1)
         inputs = {
             'fc': st.number_input(label="Concrete Compressive Strength, $f_c$ (MPa)", value=49.0, min_value=20.0, max_value=100.0, step=1.0),
             'B': st.number_input(label="Pier Dimension, $B$ (m)", value=0.50, min_value=0.1, max_value=5.0, step=0.05),
@@ -251,6 +247,7 @@ with tab_results:
                 mime="application/pdf",
                 use_container_width=True
             )
+
 
 
 
